@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_camera_shutter">Camera shutter</string>
+    <string name="cd_back_button">Back button</string>
+    <string name="cd_test_result_image">Test result image</string>
+    <string name="cd_scan_button">Scan button</string>
+</resources>

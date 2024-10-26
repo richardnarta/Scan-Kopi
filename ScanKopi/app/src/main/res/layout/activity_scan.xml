@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.scan.ScanActivity">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:rippleColor="?attr/colorControlHighlight"
+        android:src="@drawable/ic_back_white"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/cd_back_button"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gh_15"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/gh_15"
+            app:layout_constraintBottom_toBottomOf="@id/gh_75"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_scan"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/scan"
+            app:lottie_loop="true"
+            android:visibility="invisible"
+            android:importantForAccessibility="no"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/gh_15"
+            app:layout_constraintBottom_toBottomOf="@id/gh_75"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gh_75"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <ImageButton
+            android:id="@+id/btn_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:padding="15dp"
+            app:rippleColor="?attr/colorControlHighlight"
+            android:src="@drawable/ic_camera"
+            android:background="@drawable/camera_shutter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/cd_camera_shutter" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/sheet_test_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        tools:visibility="visible"
+        android:paddingHorizontal="16dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/rounded_top_rect_surface">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="100dp"
+            android:background="@drawable/swipe_up"/>
+
+        <ScrollView
+            android:id="@+id/sv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextHeader1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/result_title" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="16dp">
+
+                    <com.android.scankopi.presentation.customview.ResultQualityText
+                        android:id="@+id/quality_sni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginEnd="16dp"
+                        tools:qualityScore="7"
+                        tools:text="Mutu 4a"/>
+
+                    <com.android.scankopi.presentation.customview.ResultQualityText
+                        android:id="@+id/quality_scaa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        tools:qualityScore="1"
+                        tools:text="Premium Grade"/>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/TextNormal"
+                    android:id="@+id/tv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Kopi yang anda scan memiliki mutu [] berdasarkan standar penilaian Standar Nasional Indonesia (SNI), dengan jumlah nilai cacat sebesar []. Kopi ini memenuhi syarat mutu [] SNI dengan ketentuan jumlah nilai cacat pada rentang [].\n\nSelain itu, menurut standar SCAA, kopi ini memperoleh mutu [] karena memiliki jumlah nilai cacat sebesar []. Kopi ini telah memenuhi syarat-syarat dari mutu [] yaitu []."/>
+
+                <TextView
+                    style="@style/TextHeader2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scoring_detail"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    style="@style/TextNormal"
+                    android:id="@+id/tv_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    tools:text="2 biji hitam\n3 biji gelondong"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/save_result"
+                    android:fontFamily="@font/inter_medium"
+                    app:rippleColor="?attr/colorControlHighlight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

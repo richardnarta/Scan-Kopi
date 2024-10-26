@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Scan Kopi</string>
+
+    <string name="permission_denied">Ijin ditolak, Fitur camera tidak bisa diakses</string>
+    <string name="error_message">Terjadi kesalahan, coba lagi</string>
+    <string name="result_title">Hasil pengujian kecacatan kopi</string>
+    <string name="save_result">Simpan hasil pengujian</string>
+    <string name="scoring_detail">Rincian penilaian</string>
+    <string name="save_success">Berhasil menyimpan data pengujian</string>
+    <string name="title_detail">Detail Pengujian</string>
+    <string name="title_history">Riwayat Pengujian</string>
+    <string name="title_about">Tentang Kami</string>
+    <string name="title_info">Informasi</string>
+    <string name="title_about_model">Tentang Model</string>
+    <string name="date_template">Waktu scan : %1$s</string>
+    <string name="no_history_data">Belum ada data pengujian</string>
+    <string name="test_definition">Uji kecacatan biji kopi adalah prosedur untuk menilai kualitas biji kopi mentah dengan mendeteksi jumlah dan jenis cacat pada sampel biji kopi.</string>
+    <string name="title_test_cv">Uji kecacatan biji kopi?</string>
+    <string name="try_scan"><![CDATA[Coba scan sekarang ->]]></string>
+    <string name="about_model">Tentang model</string>
+    <string name="about_us">Tentang kami</string>
+    <string name="latest_test">Pengujian terakhir</string>
+    <string name="see_all">Lihat semua</string>
+</resources>

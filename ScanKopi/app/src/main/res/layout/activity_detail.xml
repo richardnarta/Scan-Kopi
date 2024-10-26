@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.detail.DetailActivity">
+
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_test_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/placeholder"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/cd_test_result_image"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/iv_test_photo">
+
+                <TextView
+                    style="@style/TextHeader1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/result_title"/>
+
+                <TextView
+                    android:id="@+id/tv_timestamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/inter_medium"
+                    android:layout_marginTop="8dp"
+                    tools:text="Waktu pengambilan: 20-12-2024"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <com.android.scankopi.presentation.customview.ResultQualityText
+                        android:id="@+id/quality_sni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginEnd="16dp"
+                        tools:qualityScore="7"
+                        tools:text="Mutu 4a"/>
+
+                    <com.android.scankopi.presentation.customview.ResultQualityText
+                        android:id="@+id/quality_scaa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        tools:qualityScore="1"
+                        tools:text="Premium Grade"/>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/TextNormal"
+                    android:id="@+id/tv_desc"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Kopi yang anda scan memiliki mutu [] berdasarkan standar penilaian Standar Nasional Indonesia (SNI), dengan jumlah nilai cacat sebesar []. Kopi ini memenuhi syarat mutu [] SNI dengan ketentuan jumlah nilai cacat pada rentang [].\n\nSelain itu, menurut standar SCAA, kopi ini memperoleh mutu [] karena memiliki jumlah nilai cacat sebesar []. Kopi ini telah memenuhi syarat-syarat dari mutu [] yaitu []."/>
+
+                <TextView
+                    style="@style/TextHeader2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scoring_detail"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    style="@style/TextNormal"
+                    android:id="@+id/tv_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    tools:text="2 biji hitam\n3 biji gelondong"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
