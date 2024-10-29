@@ -2,6 +2,7 @@ package com.android.scankopi.di
 
 import com.android.scankopi.data.repository.TestResultRepository
 import com.android.scankopi.data.src.local.room.Database
+import com.android.scankopi.data.src.remote.network.ApiConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,6 @@ object RepositoryModule {
     fun provideTestResultRepository(
         testDatabase: Database
     ): TestResultRepository {
-        return TestResultRepository(testDatabase)
+        return TestResultRepository(testDatabase, ApiConfig.getApiService())
     }
 }

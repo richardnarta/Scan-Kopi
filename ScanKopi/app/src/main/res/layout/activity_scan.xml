@@ -104,62 +104,32 @@
             android:overScrollMode="never"
             android:scrollbars="none">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/TextHeader1"
+                    android:id="@+id/title_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/result_title" />
+                    android:text="@string/result_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="16dp">
-
-                    <com.android.scankopi.presentation.customview.ResultQualityText
-                        android:id="@+id/quality_sni"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:layout_marginEnd="16dp"
-                        tools:qualityScore="7"
-                        tools:text="Mutu 4a"/>
-
-                    <com.android.scankopi.presentation.customview.ResultQualityText
-                        android:id="@+id/quality_scaa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        tools:qualityScore="1"
-                        tools:text="Premium Grade"/>
-                </LinearLayout>
-
-                <TextView
-                    style="@style/TextNormal"
-                    android:id="@+id/tv_desc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Kopi yang anda scan memiliki mutu [] berdasarkan standar penilaian Standar Nasional Indonesia (SNI), dengan jumlah nilai cacat sebesar []. Kopi ini memenuhi syarat mutu [] SNI dengan ketentuan jumlah nilai cacat pada rentang [].\n\nSelain itu, menurut standar SCAA, kopi ini memperoleh mutu [] karena memiliki jumlah nilai cacat sebesar []. Kopi ini telah memenuhi syarat-syarat dari mutu [] yaitu []."/>
-
-                <TextView
-                    style="@style/TextHeader2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/scoring_detail"
-                    android:layout_marginTop="20dp"/>
-
-                <TextView
-                    style="@style/TextNormal"
-                    android:id="@+id/tv_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    tools:text="2 biji hitam\n3 biji gelondong"/>
+                <ImageView
+                    android:id="@+id/iv_test_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/placeholder"
+                    app:layout_constraintTop_toBottomOf="@id/title_result"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:contentDescription="@string/cd_test_result_image" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_save"
@@ -171,10 +141,10 @@
                     android:fontFamily="@font/inter_medium"
                     app:rippleColor="?attr/colorControlHighlight"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_test_photo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

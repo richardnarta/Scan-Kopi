@@ -118,6 +118,10 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             results = viewModel.testResults()
             rvAdapter.apply {
+                if (results.isNotEmpty()) {
+                    binding.tvNoHistory.gone()
+                    rvTest.visible()
+                }
                 submitList(results)
             }
         }

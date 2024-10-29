@@ -1,7 +1,12 @@
 package com.android.scankopi.domain.usecase
 
+import android.content.Context
+import android.net.Uri
+import androidx.lifecycle.LiveData
 import com.android.scankopi.data.repository.TestResultRepository
 import com.android.scankopi.data.src.local.entity.TestResultEntity
+import com.android.scankopi.data.src.remote.response.Response
+import com.android.scankopi.helper.Result
 import javax.inject.Inject
 
 class TestResultInteractor @Inject constructor(
@@ -25,5 +30,12 @@ class TestResultInteractor @Inject constructor(
 
     override suspend fun deleteTestResult(id: Int) {
         return testResultRepository.deleteTestResult(id)
+    }
+
+    override suspend fun uploadToOnlineModel(
+        context: Context,
+        uri: Uri
+    ): LiveData<Result<Response>> {
+        return testResultRepository.uploadToOnlineModel(context, uri)
     }
 }

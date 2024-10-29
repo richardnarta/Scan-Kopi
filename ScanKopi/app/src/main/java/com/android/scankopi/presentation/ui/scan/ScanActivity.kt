@@ -39,10 +39,14 @@ import androidx.lifecycle.lifecycleScope
 import com.android.scankopi.R
 import com.android.scankopi.data.src.local.Dummy.getRandomDummyTest
 import com.android.scankopi.data.src.local.entity.TestResultEntity
+import com.android.scankopi.data.src.remote.response.PredictionsItem
 import com.android.scankopi.databinding.ActivityScanBinding
+import com.android.scankopi.domain.model.BoundingBox
 import com.android.scankopi.helper.Cache.clearTempImages
 import com.android.scankopi.helper.Constant.CACHE_IMAGE_PREFIX
 import com.android.scankopi.helper.CustomToast
+import com.android.scankopi.helper.Result
+import com.android.scankopi.helper.Util.drawBoundingBox
 import com.android.scankopi.helper.Util.getTimeStamp
 import com.android.scankopi.helper.bitmapToUri
 import com.android.scankopi.helper.dpToPx
@@ -65,6 +69,7 @@ class ScanActivity : AppCompatActivity() {
 
     private var imageCapture: ImageCapture? = null
     private var imageUri: Uri? = null
+    private var savedImageUri: Uri? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraFrame: PreviewView
 
@@ -237,18 +242,45 @@ class ScanActivity : AppCompatActivity() {
                                         cropRect.height())
 
                                     imageUri = croppedBitmap.bitmapToUri(this@ScanActivity)
+
+                                    lifecycleScope.launch {
+                                        viewModel.getTestResult(this@ScanActivity, imageUri!!)
+                                            .observe(this@ScanActivity) { result ->
+                                            if (result != null) {
+                                                when (result) {
+                                                    is Result.Loading -> {}
+                                                    is Result.Success -> {
+                                                        if (result.data.predictions!!.isNotEmpty()) {
+                                                            savedImageUri = processImage(croppedBitmap, result.data.predictions)
+                                                                .bitmapToUri(this@ScanActivity)
+                                                            Glide.with(this@ScanActivity).load(savedImageUri)
+                                                                .into(binding.ivTestPhoto)
+                                                        } else {
+                                                            Glide.with(this@ScanActivity).load(imageUri)
+                                                                .into(binding.ivTestPhoto)
+                                                            binding.btnSave.isEnabled = false
+                                                            customToast.showToast(getString(R.string.no_defect))
+                                                        }
+                                                        binding.lottieScan.invisible()
+                                                        showBottomSheet()
+                                                    }
+                                                    is Result.Error -> {
+                                                        binding.lottieScan.invisible()
+                                                        customToast.showToast(getString(R.string.error_message))
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
                                 override fun onLoadCleared(placeholder: Drawable?) {}
                             })
                     } catch (e: Exception) {
+                        Log.e("ERROR", "onResourceReady: ", e)
+                        binding.lottieScan.invisible()
                         customToast.showToast(getString(R.string.error_message))
                     }
-
-                    handler.postDelayed({
-                        binding.lottieScan.invisible()
-                        showBottomSheet()
-                    }, 3000)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -324,6 +356,24 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    private fun processImage(bitmap: Bitmap, result: List<PredictionsItem>): Bitmap {
+        Log.d("BITMAP", "processImage: ${bitmap.width}")
+        val box = arrayListOf<BoundingBox>()
+        result.forEach { item ->
+            box.add(
+                BoundingBox(
+                    Rect(item.x.toInt() - (item.width / 2).toInt(),
+                        item.y.toInt() - (item.height / 2).toInt(),
+                        item.width.toInt() + item.x.toInt() - (item.width / 2).toInt(),
+                        item.height.toInt() + item.y.toInt() - (item.height / 2).toInt()),
+                    "${(item.confidence * 100).toString().slice(0..3)} %"
+                )
+            )
+        }
+
+        return drawBoundingBox(bitmap, box)
+    }
+
     private fun setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.sheetTestResult)
 
@@ -337,9 +387,7 @@ class ScanActivity : AppCompatActivity() {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN && cameraProvider == null) {
                     clearTempImages(this@ScanActivity)
                     startCamera()
-                    if (binding.btnSave.isEnabled) {
-                        imageUri?.let { deleteImage(it) }
-                    }
+                    imageUri?.let { deleteImage(it) }
                     binding.btnSave.isEnabled = true
                     binding.btnCamera.visible()
                 }
@@ -357,21 +405,13 @@ class ScanActivity : AppCompatActivity() {
     private fun showBottomSheet() {
         val displayHeight = Resources.getSystem().displayMetrics.heightPixels.toFloat()
         bottomSheetBehavior.apply {
-            halfExpandedRatio = (120.dpToPx(resources).toFloat() / displayHeight)
-            peekHeight = 120.dpToPx(resources)
+            halfExpandedRatio = 0.8F
+            peekHeight = (displayHeight * 8 / 10).toInt()
             state = BottomSheetBehavior.STATE_HALF_EXPANDED
             isHideable = true
         }
 
         val data = getRandomDummyTest()
-        binding.apply {
-            tvDesc.text = data.description
-            qualitySni.qualityScore = data.sni
-            qualityScaa.qualityScore = data.scaa
-            qualitySni.text = data.sniDesc
-            qualityScaa.text = data.scaaDesc
-            tvDetail.text = data.detail
-        }
 
         binding.btnSave.apply {
             setOnClickListener {
@@ -380,7 +420,7 @@ class ScanActivity : AppCompatActivity() {
                         TestResultEntity(
                             testId = 0,
                             testTimeStamp = getTimeStamp(),
-                            testImage = imageUri.toString(),
+                            testImage = savedImageUri.toString(),
                             testDescription = data.description,
                             testSniScore = data.sni,
                             testScaaScore = data.scaa,
@@ -455,6 +495,7 @@ class ScanActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
+        imageUri?.let { deleteImage(it) }
         clearTempImages(this)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
@@ -462,6 +503,7 @@ class ScanActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
+        imageUri?.let { deleteImage(it) }
         clearTempImages(this)
         _binding = null
     }

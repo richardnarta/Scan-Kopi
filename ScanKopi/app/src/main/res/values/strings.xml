@@ -2,6 +2,7 @@
     <string name="app_name">Scan Kopi</string>
 
     <string name="permission_denied">Ijin ditolak, Fitur camera tidak bisa diakses</string>
+    <string name="no_defect">Tidak ditemukan biji kopi yang cacat</string>
     <string name="error_message">Terjadi kesalahan, coba lagi</string>
     <string name="result_title">Hasil pengujian kecacatan kopi</string>
     <string name="save_result">Simpan hasil pengujian</string>
