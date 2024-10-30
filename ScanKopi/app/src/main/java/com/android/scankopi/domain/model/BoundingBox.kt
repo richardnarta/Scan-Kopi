@@ -4,5 +4,6 @@ import android.graphics.Rect
 
 data class BoundingBox(
     val rectangle: Rect,
-    val score: String
+    val score: String,
+    val className: String,
 )

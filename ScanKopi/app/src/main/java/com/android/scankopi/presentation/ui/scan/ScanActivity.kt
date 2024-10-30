@@ -366,7 +366,8 @@ class ScanActivity : AppCompatActivity() {
                         item.y.toInt() - (item.height / 2).toInt(),
                         item.width.toInt() + item.x.toInt() - (item.width / 2).toInt(),
                         item.height.toInt() + item.y.toInt() - (item.height / 2).toInt()),
-                    "${(item.confidence * 100).toString().slice(0..3)} %"
+                    "${(item.confidence * 100).toString().slice(0..3)} %",
+                    item.jsonMemberClass.toString()
                 )
             )
         }

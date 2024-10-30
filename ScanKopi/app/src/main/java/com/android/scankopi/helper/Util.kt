@@ -50,6 +50,13 @@ object Util {
             isAntiAlias = true
         }
 
+        val textClassPaint = Paint().apply {
+            color = Color.BLUE
+            textSize = 36F
+            strokeWidth = 1F
+            isAntiAlias = true
+        }
+
         boundingBox.forEach { box ->
             canvas.drawRect(box.rectangle, paint)
 
@@ -63,6 +70,8 @@ object Util {
             canvas.drawRect(smallRect, rectPaint)
 
             canvas.drawText(box.score, smallRect.left + 5f, smallRect.bottom - 5f, textPaint)
+
+            canvas.drawText(box.className, box.rectangle.left + 5f, box.rectangle.bottom + 41f, textClassPaint)
         }
         return mutableBitmap
     }
